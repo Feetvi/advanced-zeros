@@ -1,25 +1,34 @@
-module.exports = function getZerosCount(number, base) {
-  var b = base;
-  var num = number;
-  var pow = 0;
-  var res = 0;
-
-  do {  	
-  	base = base / 2;
-  	pow++;  	
-  } while (base / 2 >= 1); 
-  	
-  for (var i = 2; i < num; i *= 2) {
-  //	console.log(i);
-  	res += Math.floor(num / i);
- // 	console.log(res); 
+module.exports = 
+function getZerosCount(number, base) {
+  var b = base;  
+  var primes = {};
+  var temp = [];
+  var res;
+  next:
+  for (var i = 2; i <= b; i++) {
+  	while(true) {
+  		if (b % i == 0) {
+  			b /= i;
+  			if (primes[i] === undefined) {
+  				primes[i] = 1;
+  			} else {
+  				primes[i] += 1;
+  			}
+  		} else {
+  			continue next;
+  		}
+  	}
+  }  
+ 
+  for (var key in primes) {
+  	res = 0;  	
+  	for (var j = +key; j <= number; j *= +key) {
+  		res += Math.floor(number/j);  	
+  	}  
+  	temp.push(Math.floor(res/primes[key]));
   }
 
-//  console.log(pow);
-  res = Math.floor(res / pow);
-
-  return res;
+  return temp[temp.length-1];
 }
 
-
-//console.log(getZerosCount(100, 16));
+//getZerosCount(10, 8);
